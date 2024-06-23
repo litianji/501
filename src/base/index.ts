@@ -274,7 +274,7 @@ export default class BaseComponent {
   }
 
   // Frame 动画
-  render(deltaTime: number) {}
+  render() {}
 
   // render 区域大小变化
   viewportResize(_size: number[]) {}

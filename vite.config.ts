@@ -6,13 +6,13 @@ import path from 'path';
 export default defineConfig({
   plugins: [glsl(), eslint()],
   resolve: {},
-  build: {
-    lib: {
-      entry: path.resolve(__dirname, './src/tool/index.ts'),
-      name: 'game',
-      fileName: 'gamebody',
-    },
-  },
+  // build: {
+  //   lib: {
+  //     entry: path.resolve(__dirname, './src/tool/index.ts'),
+  //     name: 'game',
+  //     fileName: 'gamebody',
+  //   },
+  // },
   server: {
     host: '0.0.0.0',
   },

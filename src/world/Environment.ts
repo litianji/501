@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import BaseComponent, { resources } from '../base';
 import MetroStation from './MetroStation';
 import Building from './Building';
+import PhysicsWorld from './PhysicsWorld';
 
 export default class Environment extends BaseComponent {
   floor: THREE.Mesh;
@@ -12,6 +13,8 @@ export default class Environment extends BaseComponent {
 
   buildings: Building[] = [];
 
+  physicsWorld: PhysicsWorld;
+
   constructor() {
     super();
     this.init();
@@ -19,7 +22,7 @@ export default class Environment extends BaseComponent {
 
   init() {
     this.floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(100, 100, 200, 200),
+      new THREE.PlaneGeometry(50, 50, 200, 200),
       new THREE.MeshStandardMaterial({ color: 0xe9e9e9 }),
     );
 
@@ -45,15 +48,41 @@ export default class Environment extends BaseComponent {
         }
 
         if (item.name.includes('metroStation')) {
-          this.metroStations.push(new MetroStation(item));
+          const metro = new MetroStation(item, this);
+          this.meshs.push(item);
+          this.metroStations.push(metro);
         }
 
         if (item.name === 'Cube') {
+          this.meshs.push(item);
           this.buildings.push(new Building(item));
         }
       }
     });
 
     this.scene.add(data.scene);
+
+    // 物理世界
+    this.physicsWorld = new PhysicsWorld();
+    this.physicsWorld.attach(this.meshs);
+    this.physicsWorld.setColliderEnviroment();
+  }
+
+  checkValidPoint(point: THREE.Vector3) {
+    const raycaster = new THREE.Raycaster();
+    const down = new THREE.Vector3(0, -1, 0);
+    const target = point.clone().setY(100);
+    raycaster.set(target, down);
+    const intersects = raycaster.intersectObjects(this.meshs);
+
+    if (!intersects.length) {
+      return false;
+    }
+
+    if (intersects[0].object.name === 'floor') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
