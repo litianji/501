@@ -3,3 +3,4 @@ node_modules
 *.blend1
 blend
 dist
+docs
