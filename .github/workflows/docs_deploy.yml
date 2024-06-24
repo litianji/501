@@ -2,7 +2,7 @@ name: Node.js CI
 
 on:
   push:
-    branchs:
+    branches:
       - main
   pull_request:
     branches: 
@@ -21,8 +21,7 @@ jobs:
         yarn install
         yarn build
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@v4.2.2
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages
-        folder: docs
+        publish_branch: gh-pages
+        publish_dir: ./docs
