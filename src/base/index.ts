@@ -35,9 +35,9 @@ const setCamera = () => {
     return camera;
   }
   camera = new THREE.PerspectiveCamera(30, viewSize[0] / viewSize[1], 1, 1000);
-  camera.position.x = 20;
-  camera.position.y = 14;
-  camera.position.z = 9;
+  camera.position.x = 15;
+  camera.position.y = 10;
+  camera.position.z = 0;
   camera.lookAt(0, 0, 0);
 
   cameraOrt = new THREE.OrthographicCamera(

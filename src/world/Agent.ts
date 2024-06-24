@@ -29,7 +29,7 @@ export default class Agent extends BaseComponent {
 
   height: number = 0.2;
 
-  speed: number = 2;
+  speed: number = 1.4;
 
   collisionPhysics: CollisionPhysics;
 
@@ -38,6 +38,12 @@ export default class Agent extends BaseComponent {
   walkDir: THREE.Vector3;
 
   environment: Environment;
+
+  lookDir: THREE.Vector3;
+
+  lookQuaternion: THREE.Quaternion;
+
+  clock: THREE.Clock = new THREE.Clock();
 
   constructor(params: ParamsType) {
     super();
@@ -50,6 +56,7 @@ export default class Agent extends BaseComponent {
     this.mesh = params.mesh;
     this.physicsWorld = params.environment.physicsWorld;
     this.environment = params.environment;
+    this.lookDir = new THREE.Vector3(0, 0, 1);
 
     this.init();
 
@@ -88,7 +95,7 @@ export default class Agent extends BaseComponent {
         }
         this.walkDir.normalize();
         this.mesh.position.addScaledVector(this.walkDir, this.speed * delta);
-        this.applyLook(delta);
+        this.applyLook();
         return this.walkDir;
       },
     });
@@ -114,7 +121,35 @@ export default class Agent extends BaseComponent {
     return body;
   }
 
-  applyLook(delta) {
+  applyLook() {
+    // if (this.lookDir === this.walkDir) {
+    //   return;
+    // }
+    // const z = new THREE.Vector3(0, 0, 1);
+    // if (!this.lookQuaternion) {
+    //   this.lookQuaternion = new THREE.Quaternion().setFromUnitVectors(z, this.walkDir);
+    //   this.mesh.rotation.setFromQuaternion(this.lookQuaternion);
+    // } else {
+    //   const lookSpeed = 1;
+    //   const step = THREE.MathUtils.clamp(this.clock.getElapsedTime() * lookSpeed, 0, 1);
+    //   console.log('step', step);
+    //   const total = new THREE.Quaternion().setFromUnitVectors(z, this.walkDir);
+    //   this.lookQuaternion = new THREE.Quaternion().slerpQuaternions(
+    //     this.lookQuaternion,
+    //     total,
+    //     1 - step,
+    //   );
 
+    //   this.mesh.rotation.setFromQuaternion(this.lookQuaternion);
+
+    //   if (step === 1) {
+    //     this.clock = new THREE.Clock();
+    //     this.lookDir = this.walkDir;
+    //   }
+    // }
+
+    const z = new THREE.Vector3(0, 0, 1);
+    this.lookQuaternion = new THREE.Quaternion().setFromUnitVectors(z, this.walkDir);
+    this.mesh.rotation.setFromQuaternion(this.lookQuaternion);
   }
 }

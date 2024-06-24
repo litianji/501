@@ -21,6 +21,8 @@ export default class MetroStation extends BaseComponent {
 
   collision: THREE.Mesh;
 
+  plane: THREE.Mesh;
+
   constructor(mesh: THREE.Mesh, env: Environment) {
     super();
     this.mesh = mesh;
@@ -28,6 +30,7 @@ export default class MetroStation extends BaseComponent {
     this.center = new THREE.Vector3().applyMatrix4(this.mesh.matrixWorld);
 
     this.getDir();
+    this.createPlane();
     this.addClick(this.mesh, this.onClick.bind(this));
 
     if (gui) {
@@ -54,14 +57,12 @@ export default class MetroStation extends BaseComponent {
   }
 
   createAgent() {
-    console.log('createAgent', this.mesh);
-
     const character = new Character({
       environment: this.environment,
       position: this.center,
     });
     const position = new THREE.Vector3().addVectors(this.center, this.dir);
-    character.walk(position);
+    character.walk(position, 3);
 
     // @ts-ignore
     window.test = character;
@@ -109,5 +110,21 @@ export default class MetroStation extends BaseComponent {
       ),
       new THREE.MeshLambertMaterial({ color: 0xff0000 }),
     );
+  }
+
+  createPlane() {
+    const border = 0.5;
+    const boundingBox = this.mesh.geometry.boundingBox.clone().applyMatrix4(this.mesh.matrixWorld);
+    this.plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(
+        boundingBox.max.x - boundingBox.min.x + border,
+        boundingBox.max.z - boundingBox.min.z + border,
+      ),
+      new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0 }),
+    );
+    this.plane.name = 'metro-plane';
+    this.plane.rotation.x = -Math.PI / 2;
+    this.plane.position.copy(this.center);
+    this.scene.add(this.plane);
   }
 }

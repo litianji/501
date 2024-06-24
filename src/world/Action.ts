@@ -14,9 +14,12 @@ export default class Action extends BaseComponent {
 
   clock: THREE.Clock = new THREE.Clock();
 
+  animateName: string;
+
   constructor(name: string) {
     super();
     this.name = name;
+    // this.animateName = animateName;
   }
 
   set onUpdate(value) {

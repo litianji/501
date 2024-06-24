@@ -68,12 +68,16 @@ export default class Environment extends BaseComponent {
     this.physicsWorld.setColliderEnviroment();
   }
 
+  // 待优化
   checkValidPoint(point: THREE.Vector3) {
     const raycaster = new THREE.Raycaster();
     const down = new THREE.Vector3(0, -1, 0);
     const target = point.clone().setY(100);
     raycaster.set(target, down);
-    const intersects = raycaster.intersectObjects(this.meshs);
+
+    const planes = this.metroStations.map(item => item.plane);
+    const buildingsPlanes = this.buildings.map(item => item.plane);
+    const intersects = raycaster.intersectObjects([...this.meshs, ...planes, ...buildingsPlanes]);
 
     if (!intersects.length) {
       return false;
