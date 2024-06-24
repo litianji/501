@@ -11,9 +11,10 @@ export default class World extends BaseComponent {
 
     console.log(this);
     const orbitControls = getOrbitControls();
-    // orbitControls.enableZoom = false;
-    // orbitControls.minPolarAngle = Math.PI * 0.3;
-    // orbitControls.maxPolarAngle = Math.PI * 0.3;
+
+    orbitControls.enableZoom = false;
+    orbitControls.minPolarAngle = Math.PI * 0.3;
+    orbitControls.maxPolarAngle = Math.PI * 0.3;
     this.init();
   }
 

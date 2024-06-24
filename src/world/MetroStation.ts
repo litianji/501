@@ -33,6 +33,10 @@ export default class MetroStation extends BaseComponent {
     this.createPlane();
     this.addClick(this.mesh, this.onClick.bind(this));
 
+    setTimeout(() => {
+      this.createAgent();
+    }, 500 + Math.random() * 200);
+
     if (gui) {
       const arrowHelper = new THREE.ArrowHelper(
         this.dir,
